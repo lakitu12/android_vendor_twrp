@@ -9,6 +9,7 @@ EXPORT_TO_SOONG := \
     KERNEL_MAKE_FLAGS \
     PATH_OVERRIDE_SOONG \
     TARGET_KERNEL_CONFIG \
+    TARGET_KERNEL_SOURCE \
     TARGET_KERNEL_HEADERS_SOURCE \
     TW_THEME \
     TW_CUSTOM_THEME \
@@ -43,7 +44,7 @@ SOONG_CONFIG_twrpVarsPlugin :=
 
 define addVar
   SOONG_CONFIG_twrpVarsPlugin += $(1)
-  SOONG_CONFIG_twrpVarsPlugin_$(1) := $$(subst ",\",$$($1))
+  SOONG_CONFIG_twrpVarsPlugin_$(1) := $($1)
 endef
 
 $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call addVar,$(v))))
