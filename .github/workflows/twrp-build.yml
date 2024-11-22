@@ -36,7 +36,16 @@ jobs:
             maven ncurses-dev openjdk-8-jdk pngcrush python python3.8 rsync \
             schedtool squashfs-tools tmux unzip w3m xsltproc zip zlib1g-dev
 
+      - name: Install repo tool
+        run: |
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+rx ~/bin/repo
+          echo 'export PATH=~/bin:$PATH' >> $GITHUB_ENV
+
       - name: Sync Source Code
+        env:
+          PATH: ~/bin:$PATH
         run: |
           repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-14
           repo sync
