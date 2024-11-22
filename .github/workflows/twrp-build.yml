@@ -8,16 +8,16 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-20.04  # 可以考虑使用 ubuntu-latest
+    runs-on: ubuntu-20.04  # 或者使用 ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        device: [ marble ]  # 请替换为你的设备代码
+        device: [ your_device_code ]  # 请替换为你的设备代码
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
         with:
-          depth: 1
+          fetch-depth: 1  # 仅检出最新的提交
 
       - name: Set up JDK 8
         uses: actions/setup-java@v3
@@ -25,7 +25,6 @@ jobs:
           distribution: 'temurin'
           java-version: '8'
 
-      # （可选）设置 Python 3.8
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
         with:
@@ -47,9 +46,6 @@ jobs:
           sudo mkdir -p /usr/local/bin
           sudo curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/local/bin/repo
           sudo chmod a+rx /usr/local/bin/repo
-
-      - name: List /usr/local/bin
-        run: ls -la /usr/local/bin | grep repo
 
       - name: Verify repo installation
         run: repo --version
@@ -77,3 +73,9 @@ jobs:
         with:
           name: TWRP-Recovery-${{ matrix.device }}
           path: out/target/product/${{ matrix.device }}/recovery.img
+
+      - name: Clean up
+        run: |
+          sudo apt-get clean
+          rm -rf /var/lib/apt/lists/*
+          rm -rf out/
