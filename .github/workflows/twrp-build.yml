@@ -8,11 +8,11 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 版本
     strategy:
       fail-fast: false
       matrix:
-        device: [ marble ]
+        device: [ marble ]  # 请替换为你的设备代码
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -33,8 +33,12 @@ jobs:
             g++-multilib gcc-multilib git gnupg gperf htop lib32ncurses5-dev \
             lib32readline-dev lib32z1-dev libc6-dev-i386 libffi-dev libgl1-mesa-dev \
             libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2-dev lzop \
-            maven ncurses-dev openjdk-8-jdk pngcrush python python3.8 rsync \
+            maven ncurses-dev openjdk-8-jdk pngcrush python python3 python3.8 rsync \
             schedtool squashfs-tools tmux unzip w3m xsltproc zip zlib1g-dev
+
+      - name: Ensure python3 is available
+        run: |
+          sudo ln -sf /usr/bin/python3.8 /usr/bin/python3
 
       - name: Install repo tool
         run: |
@@ -42,6 +46,9 @@ jobs:
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+rx ~/bin/repo
           echo 'export PATH=~/bin:$PATH' >> $GITHUB_ENV
+
+      - name: Verify repo installation
+        run: repo --version
 
       - name: Sync Source Code
         env:
