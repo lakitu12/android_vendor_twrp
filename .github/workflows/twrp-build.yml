@@ -48,7 +48,7 @@ jobs:
           mka recoveryimage
 
       - name: Upload Recovery Image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: TWRP-Recovery-${{ matrix.device }}
           path: out/target/product/${{ matrix.device }}/recovery.img
