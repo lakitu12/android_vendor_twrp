@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        device: [ your_device_code ]  # 请替换为你的设备代码
+        device: [ marble ]  # 请替换为你的设备代码
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
